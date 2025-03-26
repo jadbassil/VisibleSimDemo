@@ -2,6 +2,10 @@ include_directories(src)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/lib")
 
+set(CPACK_PACKAGE_NAME "VisibleSim")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_GENERATOR "ZIP")
+include(CPack)
 
 set(COMMON_SRC_FILES
         src/math/cell3DPosition.h

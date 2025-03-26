@@ -103,16 +103,3 @@ ADD_SUBDIRECTORY(simulatorCore)
 add_executable(simpleColorBB applicationsSrc/simpleColorBB/simpleColorBB.cpp applicationsSrc/simpleColorBB/simpleColorCodeBB.cpp)
 target_link_libraries(simpleColorBB BlinkyBlocks ) #
 set_target_properties(simpleColorBB PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/simpleColorBB)
-
-add_executable(locomotionCatoms applicationsSrc/locomotionCatoms/locomotionCatoms.cpp applicationsSrc/locomotionCatoms/locomotionCatomsBlockCode.cpp)
-target_link_libraries(locomotionCatoms Catoms3D ) #
-set_target_properties(locomotionCatoms PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/locomotionCatoms)
-
-add_executable(slidingCubesExample applicationsSrc/slidingCubesExample/slidingCubesExample.cpp applicationsSrc/slidingCubesExample/slidingCubesExampleBlockCode.cpp)
-target_link_libraries(slidingCubesExample SlidingCubes ) #
-set_target_properties(slidingCubesExample PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/slidingCubesExample)
-
-
-add_executable(catomsTest1 applicationsSrc/catomsTest1/catomsTest1.cpp applicationsSrc/catomsTest1/catomsTest1BlockCode.cpp)
-target_link_libraries(catomsTest1 Catoms3D ) #
-set_target_properties(catomsTest1 PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/catomsTest1)

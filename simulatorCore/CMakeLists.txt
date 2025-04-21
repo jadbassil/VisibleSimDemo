@@ -373,8 +373,7 @@ set(COMMON_SRC_FILES
 )
 add_library(src STATIC ${COMMON_SRC_FILES})
 IF (APPLE)
-        #target_link_libraries(src freeglut glew muparser )
-        target_link_libraries(src    muparser    libglew_static  freeglut OpenGL::GL)
+        target_link_libraries(src    muparser   -lGLEW  ${GLUT_LIBRARY_DIRS}/libglut.dylib  OpenGL::GL)
 ENDIF (APPLE)
 
 IF (WIN32)

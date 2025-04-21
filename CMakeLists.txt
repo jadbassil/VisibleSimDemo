@@ -68,22 +68,87 @@ if (WIN32)
     message(STATUS ">>> Win32")
     add_compile_definitions(USE_FREEGLUT)
     add_compile_definitions("ROOT_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\"")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "../simulatorCore/lib")
-    
-    if (MSVC)
-        message(STATUS "+Visual Studio")
-        include_directories(${glfw_SOURCE_DIR}/include ${glew_SOURCE_DIR}/include ${muparser_SOURCE_DIR}/include)
-        target_link_libraries(${PROJECT_NAME} glfw glew muparser)
-    endif ()
+    # message(STATUS "Installation dir:" ${CMAKE_CURRENT_SOURCE_DIR})
+    # #[[add_compile_definitions(DEBUG_GRAPHICS)]]
 
-    if (MINGW)
+    # set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "../simulatorCore/lib")
+
+    IF (MSVC)
+        message(STATUS "+Visual studio")
+        set(GLUT_DIR F:/freeglut-3.0.0)
+        set(CMAKE_PREFIX_PATH FREEGLUT)
+
+        set(FREEGLUT_INCLUDE_DIRS F:/freeglut-3.0.0/include)
+        set(FREEGLUT_LIBRARY_DIRS F:/freeglut-3.0.0/cmake-build-debug/lib)
+        set(FREEGLUT_LIBRARIES libfreeglut_static.a)
+
+        find_package(OPENGL REQUIRED)
+
+        include_directories(${FREEGLUT_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS} ${GLUT_INTERFACE_DIRS})
+        link_directories(${FREEGLUT_LIBRARY_DIRS} ${OPENGL_LIBRARY_DIRS} ${GLUT_INTERFACE_LIB_DIRS})
+        add_definitions(${FREEGLUT_DEFINITIONS} ${OPENGL_DEFINITIONS})
+        add_executable(${PROJECT_NAME} ${PROJECT_FILES})
+        target_link_libraries(${PROJECT_NAME} ${FREEGLUT_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} glutInterface.lib)
+    ENDIF (MSVC)
+
+    IF (MINGW)
         message(STATUS "+MinGW")
-        include_directories(${glfw_SOURCE_DIR}/include ${glew_SOURCE_DIR}/include ${muparser_SOURCE_DIR}/include)
-        target_link_libraries(${PROJECT_NAME} glfw glew muparser)
-    endif ()
-endif ()
+        # Include CPM.cmake for dependency management
+        set(CPM_DOWNLOAD_VERSION 0.40.8) 
+        set(CPM_DOWNLOAD_LOCATION "${CMAKE_BINARY_DIR}/cmake/CPM_${CPM_DOWNLOAD_VERSION}.cmake")
 
-if (LINUX)
+        if(NOT (EXISTS ${CPM_DOWNLOAD_LOCATION}))
+            message(STATUS "Downloading CPM.cmake")
+            file(DOWNLOAD https://github.com/TheLartians/CPM.cmake/releases/download/v${CPM_DOWNLOAD_VERSION}/CPM.cmake ${CPM_DOWNLOAD_LOCATION})
+        endif()
+
+        include(${CPM_DOWNLOAD_LOCATION})
+        set(BUILD_SHARED_LIBS OFF)
+
+        # Fetch dependencies
+        # Fetch dependencies
+        #CPMAddPackage("gh:glfw/glfw#3.3.8" )
+        # CPMAddPackage("https://sourceforge.net/projects/glew/files/glew/2.2.0/glew-2.2.0.zip" NAME GLEW)
+        CPMAddPackage(
+        NAME glew
+        GITHUB_REPOSITORY Perlmint/glew-cmake
+        GIT_TAG glew-cmake-2.2.0
+        
+        )
+        CPMAddPackage(
+            NAME freeglut
+            GITHUB_REPOSITORY freeglut/freeglut
+            VERSION 3.6.0
+
+        )
+        CPMAddPackage(
+        NAME muparser
+        GITHUB_REPOSITORY beltoforion/muparser
+        VERSION 2.3.5
+        OPTIONS "BUILD_SHARED_LIBS=OFF"
+        )
+        ##########################################################
+        ######Change Paths to match your library installation#####
+        ##########################################################
+        set(FREEGLUT_INCLUDE_DIRS build/_deps/freeglut-src/include)
+        set(FREEGLUT_LIBRARY_DIRS build/_deps/freeglut-build/lib)
+        add_compile_definitions(GLEW_STATIC)
+        set(GLEW_INCLUDE_DIRS build/_deps/glew-src/include)
+        set(GLEW_LIBRARY_DIRS build/_deps/glew-build/lib)
+        set(muparser_INCLUDE_DIRS build/_deps/muparser-src/include)
+        set(muparser_LIBRARY_DIRS build/_deps/muparser-build)
+
+        ##########################################################
+        ##########################################################
+        ##########################################################
+        set(ROBOTS_LIBRARY_DIRS ${CMAKE_SOURCE_DIR}/lib)
+       
+        link_directories(${ROBOTS_LIBRARY_DIRS} ${FREEGLUT_LIBRARY_DIRS} ${GLEW_LIBRARY_DIRS} ${muparser_LIBRARY_DIRS})
+        include_directories(${FREEGLUT_INCLUDE_DIRS} ${GLUT_LIBRARIES} ${GLEW_INCLUDE_DIRS} ${muparser_INCLUDE_DIRS})
+    ENDIF (MINGW)
+ENDIF (WIN32)
+
+IF (LINUX)
     message(STATUS ">>> Linux")
     include_directories(${glfw_SOURCE_DIR}/include ${glew_SOURCE_DIR}/include ${muparser_SOURCE_DIR}/include)
     target_link_libraries(${PROJECT_NAME} glfw glew muparser pthread)

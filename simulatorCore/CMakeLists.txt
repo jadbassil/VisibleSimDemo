@@ -371,11 +371,18 @@ set(COMMON_SRC_FILES
         src/replay/replayExporter.h
         src/replay/replayTags.h
 )
-add_library(src SHARED ${COMMON_SRC_FILES})
+add_library(src STATIC ${COMMON_SRC_FILES})
 IF (APPLE)
         #target_link_libraries(src freeglut glew muparser )
         target_link_libraries(src    muparser    libglew_static  freeglut OpenGL::GL)
 ENDIF (APPLE)
+
+IF (WIN32)
+#         #target_link_libraries(src freeglut glew muparser )
+         message(GLUT  ${CMAKE_SOURCE_DIR})
+#         target_link_libraries(src    muparser  libglew_static  opengl32)
+        target_link_libraries(src freeglut_static libglew_static opengl32 glu32 muparser::muparser)
+ENDIF (WIN32)
 
 add_library(BlinkyBlocks STATIC
         src/robots/blinkyBlocks/blinkyBlocksBlock.cpp
@@ -486,4 +493,3 @@ add_library(Hexanodes STATIC
         )
 
 target_link_libraries(Hexanodes src)
-

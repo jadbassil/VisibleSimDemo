@@ -115,7 +115,7 @@ void Reconf2DBlockCode::handleBackMessage(std::shared_ptr<Message> _msg,
 void Reconf2DBlockCode::handleNotifyMessage(std::shared_ptr<Message> _msg,
     P2PNetworkInterface *sender) {
     cout << " received notify from " << sender->getConnectedBlockId() << "\n";
-    module->setColor(CYAN);
+    module->setColor(GREY);
     if(nextInPath != nullptr) {
         sendMessage("Notify", new Message(NOTIFY_MSG_ID), nextInPath, 100, 200);
         nextInPath = nullptr;

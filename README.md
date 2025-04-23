@@ -30,6 +30,7 @@ brew install freeglut
 brew install glew
 brew install sbcl
 brew install muparser
+brew install cmake
 
 [Optional]
 brew install ffmpeg # for video export
@@ -57,3 +58,6 @@ sudo apt-get install libsfml-dev # for BlinkyBlocks sound simulation
 2\. `make`
 
 [git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
+
+## Windows Installation
+For the best experience, use **WSL** (Windows Subsystem for Linux https://learn.microsoft.com/en-us/windows/wsl/install) with Ubuntu. Alternatively, you can use a virtual machine running Linux.

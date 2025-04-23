@@ -657,7 +657,7 @@ Description of `targets` in the XML configuration file has to be done under the 
 
 ```xml
 <targetList>
-  <target format="grid">
+  ç
     <cell position="x1,y1,z1"/>
     <!-- ... -->
     <cell position="xM,yM,zM" color="rM,gM,bM"/>    

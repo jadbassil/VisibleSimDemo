@@ -135,6 +135,12 @@ add_executable(simpleColorBB applicationsSrc/simpleColorBB/simpleColorBB.cpp app
 target_link_libraries(simpleColorBB BlinkyBlocks)
 set_target_properties(simpleColorBB PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/simpleColorBB)
 
+
+add_executable(reconf2D applicationsSrc/reconf2D/reconf2D.cpp applicationsSrc/reconf2D/reconf2DBlockCode.cpp)
+target_link_libraries(reconf2D Hexanodes)
+set_target_properties(reconf2D PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/reconf2D)
+
+
 # add_executable(slidingCubesExample applicationsSrc/slidingCubesExample/slidingCubesExample.cpp applicationsSrc/slidingCubesExample/slidingCubesExampleBlockCode.cpp)
 # target_link_libraries(slidingCubesExample SlidingCubes)
 # set_target_properties(slidingCubesExample PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/slidingCubesExample)

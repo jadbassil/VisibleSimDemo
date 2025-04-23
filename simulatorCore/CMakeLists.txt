@@ -377,9 +377,7 @@ IF (APPLE)
 ENDIF (APPLE)
 
 IF (WIN32)
-#         #target_link_libraries(src freeglut glew muparser )
-         message(GLUT  ${CMAKE_SOURCE_DIR})
-#         target_link_libraries(src    muparser  libglew_static  opengl32)
+        message(GLUT  ${CMAKE_SOURCE_DIR})
         target_link_libraries(src freeglut_static libglew_static opengl32 glu32 muparser::muparser)
 ENDIF (WIN32)
 

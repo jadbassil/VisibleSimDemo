@@ -15,7 +15,7 @@ private:
     int distance;
     HexanodesBlock *module;
     bool isLeader;
-    P2PNetworkInterface *parent{nullptr};
+    P2PNetworkInterface *parent{nullptr};    
     P2PNetworkInterface *nextInPath{nullptr};
     int nbWaitedAnswers{0};
     int maxDistance{0};

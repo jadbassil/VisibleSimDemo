@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.16)
 project(VisibleSim)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -104,11 +104,26 @@ if(WIN32)
     ENDIF(MINGW)
 ENDIF(WIN32)
 
-IF(LINUX)
+IF (LINUX)
     message(STATUS ">>> Linux")
-    include_directories(${glfw_SOURCE_DIR}/include ${glew_SOURCE_DIR}/include ${muparser_SOURCE_DIR}/include)
-    target_link_libraries(${PROJECT_NAME} glfw glew muparser pthread)
-endif()
+
+    find_package(GLUT REQUIRED)
+    find_package(OpenGL REQUIRED)
+    find_package(GLEW REQUIRED)
+    find_package(GLU REQUIRED)
+    include_directories( ${OPENGL_INCLUDE_DIRS} ${GLU_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS})
+    link_libraries(${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLU_LIBRARIES} -lmuparser -lpthread -ldl)
+    if (NOT GLUT_FOUND)
+        message(ERROR " GLUT not found!")
+    endif (NOT GLUT_FOUND)
+
+    if (NOT OpenGL_FOUND)
+        message(ERROR " openGL not found!")
+    endif (NOT OpenGL_FOUND)
+
+    include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} )
+
+ENDIF (LINUX)
 
 IF(APPLE)
     message(STATUS ">>> APPLE SILICON")

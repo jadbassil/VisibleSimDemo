@@ -24,7 +24,7 @@ void Reconf2DBlockCode::startup() {
     console << "start";
 
     // Sample distance coloring algorithm below
-    if (isLeader) {  // Master ID  (check config file)
+    if (module->blockId==1) {  // Master ID  (check config file)
         module->setColor(RED);
         distance = 0;
         nbWaitedAnswers = sendMessageToAllNeighbors(
@@ -51,7 +51,7 @@ void Reconf2DBlockCode::handleGoMessage(std::shared_ptr<Message> _msg,
         parent = sender;
         console << " updated distance = " << d << "\n";
         distance = d;
-        module->setColor(Colors[distance % NB_COLORS]);
+        hostBlock->setColor(Colors[distance % NB_COLORS]);
 
         // Broadcast to all neighbors but ignore sender
         nbWaitedAnswers = sendMessageToAllNeighbors(

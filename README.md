@@ -41,6 +41,8 @@ brew install sfml # for BlinkyBlocks sound simulation
 
 1\. Install dependencies:
 ```shell
+sudo apt-get update
+sudo apt-get install cmake
 sudo apt-get install build-essential
 sudo apt-get install freeglut3-dev
 sudo apt-get install libglew-dev

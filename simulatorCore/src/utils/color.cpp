@@ -22,8 +22,8 @@ void Color::set(int r,int g, int b) {
 }
 
 // écriture d'une couleur dans un flux
-ostream& operator<<(ostream& f,const Color&p)
-{ f << "(" << to_string(p._rgb[0]) << "," << to_string(p._rgb[1]) << "," << to_string(p._rgb[2]) << ")";
+ostream& operator<<(ostream& f,const Color&p){
+  f << "(" << to_string(p._rgb[0]) << "," << to_string(p._rgb[1]) << "," << to_string(p._rgb[2]) << ")";
   return f;
 }
 

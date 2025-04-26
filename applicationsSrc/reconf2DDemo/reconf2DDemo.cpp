@@ -3,7 +3,7 @@
 #include "robots/hexanodes/hexanodesSimulator.h"
 #include "robots/hexanodes/hexanodesBlockCode.h"
 
-#include "reconf2DBlockCode.hpp"
+#include "reconf2DDemoBlockCode.hpp"
 
 using namespace std;
 using namespace Hexanodes;

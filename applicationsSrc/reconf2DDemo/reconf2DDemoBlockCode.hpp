@@ -1,5 +1,5 @@
-#ifndef Reconf2DBlockCode_H_
-#define Reconf2DBlockCode_H_
+#ifndef Reconf2DDemoBlockCode_H_
+#define Reconf2DDemoBlockCode_H_
 
 #include "robots/hexanodes/hexanodesWorld.h"
 #include "robots/hexanodes/hexanodesBlockCode.h"

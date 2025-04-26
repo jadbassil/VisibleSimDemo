@@ -155,6 +155,10 @@ add_executable(reconf2D applicationsSrc/reconf2D/reconf2D.cpp applicationsSrc/re
 target_link_libraries(reconf2D Hexanodes)
 set_target_properties(reconf2D PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/reconf2D)
 
+add_executable(reconf2DDemo applicationsSrc/reconf2DDemo/reconf2DDemo.cpp applicationsSrc/reconf2DDemo/reconf2DDemoBlockCode.cpp)
+target_link_libraries(reconf2DDemo Hexanodes)
+set_target_properties(reconf2DDemo PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/applicationsBin/reconf2DDemo)
+
 
 # add_executable(slidingCubesExample applicationsSrc/slidingCubesExample/slidingCubesExample.cpp applicationsSrc/slidingCubesExample/slidingCubesExampleBlockCode.cpp)
 # target_link_libraries(slidingCubesExample SlidingCubes)

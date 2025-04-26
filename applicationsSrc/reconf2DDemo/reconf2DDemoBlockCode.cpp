@@ -1,4 +1,4 @@
-#include "reconf2DBlockCode.hpp"
+#include "reconf2DDemoBlockCode.hpp"
 
 #include "robots/hexanodes/hexanodesMotionEngine.h"
 #include "robots/hexanodes/hexanodesMotionEvents.h"
@@ -27,16 +27,13 @@ void Reconf2DDemoBlockCode::startup() {
     // Sample distance coloring algorithm below
     if (isLeader) {  // Master ID  (check config file)
         module->setColor(RED);
-        distance = 0;
-        nbWaitedAnswers = sendMessageToAllNeighbors(
-            "Go Broadcast", new MessageOf<int>(GO_MSG_ID, distance), 100, 200, 0);
+        // Set the distance to 0 and initiate path search
+
     } else {
         distance = -1;  // Unknown distance
         module->setColor(WHITE);
     }
 
-    // Additional initialization and algorithm start below
-    // ...
 }
 
 void Reconf2DDemoBlockCode::handleGoMessage(std::shared_ptr<Message> _msg,
@@ -45,39 +42,9 @@ void Reconf2DDemoBlockCode::handleGoMessage(std::shared_ptr<Message> _msg,
 
     int d = *msg->getData() + 1;
     console << " received d =" << d << " from " << sender->getConnectedBlockId() << "\n";
-
-    if (parent == nullptr || distance > d) {
-        // reinitialize the path search
-        nextInPath = nullptr;
-        maxDistance = 0;
-
-        // Update distance and color
-        parent = sender;  // Set the parent. It is updated only if the distance is smaller.
-        console << " updated distance = " << d << "\n";
-        distance = d;
-        hostBlock->setColor(Colors[distance % NB_COLORS]);
-
-        // Broadcast to all neighbors but ignore sender
-        nbWaitedAnswers = sendMessageToAllNeighbors(
-            "Go Broadcast", new MessageOf<int>(GO_MSG_ID, distance), 100, 200, 1, sender);
-
-        if (nbWaitedAnswers == 0) {
-            // vector<HexanodesMotion *> tab =
-            // Hexanodes::getWorld()->getAllMotionsForModule(module); console << " nb motions = " <<
-            // tab.size() << "\n";
-            bool canMoveinCW =
-                canMove(Hexanodes::motionDirection::CW) && !target->isInTarget(module->position);
-            sendMessage(
-                "Back",
-                new MessageOf<pair<int, bool>>(BACK_MSG_ID, make_pair(distance, canMoveinCW)),
-                parent, 100, 200);
-        }
-    } else {
-        // Ignore the message
-        sendMessage("Back", new MessageOf<pair<int, bool>>(BACK_MSG_ID, make_pair(distance, false)),
-                    sender, 100, 200);
-        console << " ignored distance = " << d << "\n";
-    }
+    // Broadcast to all neighbors but ignore sender
+    // Choose the parent with the smallest distance to root
+    
 }
 
 void Reconf2DDemoBlockCode::handleBackMessage(std::shared_ptr<Message> _msg,
@@ -87,75 +54,37 @@ void Reconf2DDemoBlockCode::handleBackMessage(std::shared_ptr<Message> _msg,
     bool senderOnPath = msg->getData()->second;
     console << " received back from " << sender->getConnectedBlockId()
             << " d = " << senderDistanceToRoot << "\n";
+    // Wait for all answers
+    // save the interface that leads to the next moving module
+    // If not root send back to parent
+    // If root send notify throughout the path to reach the next moving module
 
-    nbWaitedAnswers--;
-    if (senderDistanceToRoot > maxDistance and senderOnPath) {
-        maxDistance = senderDistanceToRoot;
-        nextInPath = sender;
-    }
-    if (nbWaitedAnswers == 0) {
-        if (parent != nullptr) {
-            // vector<HexanodesMotion *> tab =
-            // Hexanodes::getWorld()->getAllMotionsForModule(module); Send back to parent
-            bool canMoveInCW = (canMove(Hexanodes::motionDirection::CW) &&
-                                !target->isInTarget(module->position)) ||
-                               maxDistance > 0;
-            if (distance > maxDistance) {
-                maxDistance = distance;
-                nextInPath = nullptr;
-            }
-            console << "nbWaitedAnswers = " << nbWaitedAnswers << "\n";
-            sendMessage(
-                "Back",
-                new MessageOf<pair<int, bool>>(BACK_MSG_ID, make_pair(maxDistance, canMoveInCW)),
-                parent, 100, 200);
-            parent = nullptr;
-            distance = -1;
-        } else {
-            cout << "path found\n";
-            if (nextInPath != nullptr) {
-                module->setColor(RED);
-                // Send notify to next in path
-                console << "nextInPath is set " << distance << "\n";
-                sendMessage("Notify", new Message(NOTIFY_MSG_ID), nextInPath, 100, 200);
-                nextInPath = nullptr;
-            } else {
-                cout << "nextInPath is null " << distance << "\n";
-            }
-        }
-    }
 }
 
 void Reconf2DDemoBlockCode::handleNotifyMessage(std::shared_ptr<Message> _msg,
                                             P2PNetworkInterface *sender) {
     cout << " received notify from " << sender->getConnectedBlockId() << "\n";
     module->setColor(GREY);
-    if (nextInPath != nullptr) {
-        sendMessage("Notify", new Message(NOTIFY_MSG_ID), nextInPath, 100, 200);
-        nextInPath = nullptr;
-    } else {
-        console << "can start moving\n";
-        if (canMove(motionDirection::CW)) moveTo(motionDirection::CW, 500000);
-    }
+    // forward notify to next in path until reaching the next moving module
+    // If the message reaches the next moving module, it will start rotating clockwise
+
 }
 
 void Reconf2DDemoBlockCode::onMotionEnd() {
+    // handle motion event
+    // continue moving until reaching the target position
     console << " has reached its destination" << "\n";
     if (target->isInTarget(module->position)) {
         console << " has reached its target" << "\n";
         module->setColor(RED);
-        distance = 0;
-        nextInPath = nullptr;
-        maxDistance = 0;
-        parent = nullptr;
-        nbWaitedAnswers = sendMessageToAllNeighbors(
-            "Go Broadcast", new MessageOf<int>(GO_MSG_ID, distance), 100, 200, 0);
+        // reinitialize local variables
+        // Initiate the search for the next path
+
+
     } else {
         console << " has not reached its target" << "\n";
-        if (canMove(motionDirection::CW)) moveTo(motionDirection::CW, 10000);
+        // contiue moving
     }
-    // do stuff
-    // ...
 }
 
 void Reconf2DDemoBlockCode::processLocalEvent(EventPtr pev) {

@@ -99,8 +99,8 @@ void Reconf2DDemoBlockCode::handleBackMessage(std::shared_ptr<Message> _msg,
             // Hexanodes::getWorld()->getAllMotionsForModule(module); Send back to parent
             bool canMoveInCW = (canMove(Hexanodes::motionDirection::CW) &&
                                 !target->isInTarget(module->position)) ||
-                               maxDistance > 0;
-            if (distance > maxDistance) {
+                               nextInPath != nullptr;
+            if (distance > maxDistance and canMoveInCW) {
                 maxDistance = distance;
                 nextInPath = nullptr;
             }

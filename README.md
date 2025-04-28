@@ -60,7 +60,7 @@ sudo apt-get install libsfml-dev # for BlinkyBlocks sound simulation
     - [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) for managing the build process.
     - [C/C++](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) for IntelliSense, debugging, and code navigation.
 
-    Configure the CMake project by selecting a kit and specifying the build directory. Use the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) to access CMake commands such as `CMake: Configure` and `CMake: Build`.
+Configure the CMake project by selecting a kit and specifying the build directory. Use the command palette (`Ctrl+Shift+P` or `Cmd+Shift+P` on macOS) to access CMake commands such as `CMake: Configure` and `CMake: Build`.
 
 [git submodules]:https://git-scm.com/book/en/v2/Git-Tools-Submodules
 

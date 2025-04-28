@@ -31,6 +31,7 @@ brew install glew
 brew install sbcl
 brew install muparser
 brew install cmake
+brew install --cask xquartz
 
 [Optional]
 brew install ffmpeg # for video export

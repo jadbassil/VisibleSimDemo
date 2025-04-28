@@ -33,7 +33,6 @@ void Reconf2DDemoBlockCode::startup() {
         distance = -1;  // Unknown distance
         module->setColor(WHITE);
     }
-
 }
 
 void Reconf2DDemoBlockCode::handleGoMessage(std::shared_ptr<Message> _msg,
